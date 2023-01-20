@@ -1,0 +1,283 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <title>Rozprowadzanie ciepła z kominka</title>
+
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+    <center>
+        <div class="head1">
+            <div class="head2">
+                <div class="head3">
+                    <p style="font-size:larger">Regulator obrotów wentylatorów</p>
+                    <p style="font-size:medium">(c)'2020 ELFRO Tomasz Fronczek</p>
+                </div>
+                <div style="float:right; width:70px;">
+
+                    <div class="dropdown">
+                        <img src="menu.png" onclick="myFunction()" class="dropbtn" />
+                        <div id="myDropdown" class="dropdown-content">
+                            <a style="color:dimgray">Home</a>
+                            <a href="about.html">O programie</a>
+                            <hr class="hrmenu" />
+                            <a href="fancfg.html">Konfig. went.</a>
+                            <a href="syscfg.html">Konfig. systemu</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="clear:both"></div>
+            <hr />
+            <script src="functions.js"></script>
+            <script>
+
+
+				var slider_mouse_up = true;
+                var updating = true;
+                var slider_locked = false;
+
+                var fans_enabled = ["%EN0%", "%EN1%", "%EN2%", "%EN3%"];
+                var fans_values = ["%VAL0%", "%VAL1%", "%VAL2%", "%VAL3%"];
+                var fans_names = ["%FAN1%", "%FAN2%", "%FAN3%", "%FAN4%"];
+				
+				var ilew = 4;
+                var ilew1 = "%ILEW%";
+                if (isNum(ilew1)) ilew = parseInt(ilew1);
+				
+				
+				var aux=1;
+				var aux_1 = "%AUX%";
+				if (isNum(aux_1) ) aux = parseInt(aux_1);
+				
+				var RELAY="%RELON%";
+				
+				
+                function setValue(nr, val) {
+                    document.getElementById("fan_value" + nr).innerHTML = val;
+                }
+                function update(nr) {
+                    var fs = document.getElementById("fan_slider" + nr);
+                    if (!slider_locked) fs.value = fans_values[nr];
+                    var fe = document.getElementById("fan_enabled" + nr);
+                    if (fans_enabled[nr] == "1") fe.checked = true;
+                    if (fans_enabled[nr] == "0") fe.checked = false;
+                    if (!slider_locked)
+                        check_slider(nr);
+                    check_img(nr);
+
+                }
+
+                function slide(nr, slider) {
+                    if (updating) return;
+
+                    if (fans_enabled[nr] == "1") {
+                        fans_values[nr] = slider.value;
+                        setValue(nr, percent(nr));
+                        check_img(nr);
+                    }
+                    if (!slider_locked || slider_mouse_up) sendState();
+                }
+                function check_img(nr) {
+                    i = document.getElementById("fan_img" + nr);
+                    if ((fans_values[nr] == 0 || fans_enabled[nr] == 0) && i.src.indexOf("fan_working") > -1)
+                        i.src = "fan_off.gif";
+                    if (fans_values[nr] != 0 && fans_enabled[nr] == 1 && i.src.indexOf("fan_off") > -1)
+                        i.src = "fan_working.gif";
+                }
+                function check_slider(nr) {
+                    slider = document.getElementById("fan_slider" + nr);
+                    if (fans_enabled[nr] == 0) {
+                        slider.disabled = true;
+                        slider.className = "slider off";
+                        setValue(nr, "OFF");
+                    }
+                    else {
+                        slider.disabled = false;
+                        setValue(nr, percent(nr));
+                        slider.className = "slider";
+                    }
+                }
+                function on_off(nr) {
+                    sw = document.getElementById("fan_enabled" + nr);
+                    if (sw.checked == true) fans_enabled[nr] = 1; else fans_enabled[nr] = 0;
+                    check_slider(nr);
+                    check_img(nr);
+                    if (!slider_locked || slider_mouse_up) sendState();
+                }
+                function sendState() {
+                    if (updating) return;
+                    var toSend = "";
+                    for (i = 0; i < 4; i++)toSend += "e" + i + "=" + fans_enabled[i] + "&";
+                    //toSend += ";";
+                    for (i = 0; i < 4; i++)toSend += "v" + i + "=" + fans_values[i] + "&";
+                    //toSend += "\\n";
+					toSend += "rel=" + RELAY + "&";
+                    sendIO(toSend);
+                }
+
+                function sendIO(command) {
+                    req2 = new XMLHttpRequest();
+                    var d = new Date();
+                    var n = d.getTime();
+                    req2.open("GET", "set_fans.html?TS=" + n + "&" + command, true);
+                    req2.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    req2.send(null);
+                }
+
+                function Receive() {
+                    req = new XMLHttpRequest();
+                    var d = new Date();
+                    var n = d.getTime();
+                    req.open("GET", "get_fans.html?TS=" + n + "", true);
+                    req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    req.onload = onLoad;
+                    req.onerror = onError;
+                    req.send(null);
+                }
+
+
+                function getInfo() {
+                    setTimeout(Receive, 1000);
+                }
+
+                
+
+                function onError(e) { getInfo(); }
+
+                function onLoad(data) {
+                    updating = true;
+                    //  var t1 = document.getElementById("t1");
+
+                    try {
+                        var lines = data.target.response.split("\r\n");
+						if (lines.length>2){
+							var en = lines[0].split(",");
+							var val = lines[1].split(",");
+							var relay=lines[2];
+							for (nr = 0; nr < 4; nr++) {
+								if (isNum(en[nr])) fans_enabled[nr] = en[nr];
+								if (isNum(val[nr])) fans_values[nr] = val[nr];
+
+								if (!slider_locked) update(nr);
+							}
+							if (slider_mouse_up) slider_locked = false;
+							setRelayON_OFF(relay);
+						}
+                    }
+                    catch (e) { }
+                    updating = false;
+                    getInfo();
+                }
+
+                function m_down() { slider_mouse_up = false; slider_locked = true; }
+
+
+                function hideW(ile) {
+
+                    var w2 = document.getElementById("fandiv1");
+                    var w3 = document.getElementById("fandiv2");
+                    var w4 = document.getElementById("fandiv3");
+
+                    w2.style.display = "";
+                    w3.style.display = "";
+                    w4.style.display = "";
+
+                    if (ile > 0) {
+                        w4.style.display = "none";
+                    }
+                    if (ile > 1) {
+                        w3.style.display = "none";
+                    }
+                    if (ile > 2) {
+                        w2.style.display = "none";
+                    }
+
+
+                }
+
+                var w = '<div id="fandiv#1"><div class="fandiv" ><p id="fan_name#1">Went #1</p>';
+                w += '<label class="switch"><input type="checkbox" id="fan_enabled#1" checked  onmousedown="m_down();" oninput="on_off(#1);" onmouseup="slider_mouse_up = true;"><span class="slider2 round" ></span></label>';
+                w += '<div class="slidecontainer"><label><input type="range" min="0" max="100" value="1" class="slider" id="fan_slider#1" onmousedown="m_down();" oninput="slide(#1,this);" onmouseup="slider_mouse_up = true;slide(#1,this);"></label></div>';
+                w += '<p style="text-align:right;margin-top:5px;" id="fan_value#1">...</p></div>';
+                w += '<div style="float:left;margin-left:10px"><img  style="width:65px;height:69px;" id="fan_img#1" src="fan_working.gif"/></div>';
+                w += '</div><div style="clear:both"></div><p><br><br></p>';
+                for (nr = 0; nr < 4; nr++) {
+                    document.write(w.replace(/#1/g, nr));
+                    document.getElementById("fan_name" + nr).innerHTML = fans_names[nr];
+                    update(nr);
+                    on_off(nr);
+                }
+                updating = false;
+                getInfo();
+				
+                hideW(4 - ilew);
+				
+
+				var aux=1;
+				var aux_1 = "%AUX%";
+				if (isNum(aux_1) ) aux = parseInt(aux_1);
+
+function setRelayON_OFF(val, myself=0)
+{
+if (aux==2){
+	var i=val;
+	if (isNum(val))
+		{
+			i=parseInt(val);
+			var obj= document.getElementById("REL-ON-OFF");
+			if (obj!=null) 
+			{
+				if (i==1) obj.innerHTML="ON"; else obj.innerHTML="OFF";
+			}
+			
+			if (myself==0){
+			obj= document.getElementById("relay");
+			if (obj!=null) 
+			{
+				if (i==1) obj.checked="checked"; else obj.checked="";
+			}
+			}
+			RELAY=i;
+			sendState();
+		}
+	}
+}
+
+function switchRelay(){
+var obj= document.getElementById("relay");
+	if (obj!=null) 
+	{
+	 if (obj.checked)  setRelayON_OFF(1,1); else setRelayON_OFF(0,1);
+	}
+}
+
+
+var v='<div class="fandiv"><p id="aux_name">%AUXN%</p><label class="switch"><input type="checkbox" id="relay" checked="" onmousedown="" oninput="switchRelay();" onmouseup="">';
+v+='<span class="slider2 round"></span></label><div style="margin:5px 10px 10px 10px; float:left;" id="REL-ON-OFF"></div>';
+v+='</div><div style="clear:both"></div><p><br><br></p>';
+
+if (aux==2) 
+{
+updating=true;
+ document.write(v);
+ setRelayON_OFF(RELAY);
+ updating=false;
+}
+
+
+            </script>
+
+            <hr />
+            <p style="text-align:right;font-size:8pt">(c)'2020 ELFRO inż. Tomasz Fronczek</p>
+
+        </div>
+    </center>
+  
+</body>
+</html>
+
+

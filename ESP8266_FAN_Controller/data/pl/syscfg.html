@@ -1,0 +1,329 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <title>Rozprowadzanie ciepła z kominka</title>
+
+    <link href="style.css" rel="stylesheet" />
+
+</head>
+<body>
+    <center>
+        <div class="head1">
+            <div class="head2">
+                <div class="head3">
+                    <p style="font-size:larger">Regulator obrotów wentylatorów</p>
+                    <p style="font-size:medium">(c)'2020 ELFRO Tomasz Fronczek</p>
+                </div>
+                <div style="float:right; width:70px;">
+
+                    <div class="dropdown">
+                        <img src="menu.png" onclick="myFunction()" class="dropbtn" />
+                        <div id="myDropdown" class="dropdown-content">
+                            <a href="/">Home</a>
+                            <a href="about.html">O programie</a>
+                            <hr class="hrmenu" />
+                            <a href="fancfg.html">Konfig. went.</a>
+                            <a style="color:dimgray">Konfig systemu</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="clear:both"></div>
+            <hr />
+
+
+            <p>Konfiguracja połączenia WiFi: </p><br />
+            <form>
+                <div style="line-height:1.5;margin-left:20px;">
+                    <table>
+                        <tr><td class="td_right">Nazwa sieci (SSID):</td><td><input id="SSID" type="text" maxlength="32" minlength="3" placeholder="Wprowadź SSID" /></td></tr>
+                        <tr><td class="td_right">Hasło:</td><td><input id="password1" type="password" maxlength="32" minlength="3" placeholder="Wprowadź Hasło" /></td></tr>
+                        <tr><td class="td_right">Powtórz Hasło:</td><td><input id="password2" type="password" minlength="3" maxlength="32" placeholder="Powtórz Hasło" /></td></tr>
+                        <tr><td>&nbsp;</td></tr>
+                        <tr>
+                            <td class="td_right" style="vertical-align:top">Adres IP:</td>
+                            <td>
+                                <input id="ipDHCP" type="radio" name="dhcp" checked="checked" value="1" onchange="chng_ip('none');" /><label for="dhcp">Automatycznie (DHCP)</label><br />
+                                <input id="ipSTATIC" type="radio" name="dhcp" value="0" onchange="chng_ip('');" /><label for="static">Ręcznie (STATIC)</label>
+                            </td>
+                        </tr>
+
+                        <tr id="ip1"><td class="td_right">IP:</td><td><input id="ipIP" type="text" maxlength="15" minlength="7" placeholder="Wprowadź addres IP" /></td></tr>
+                        <tr id="ip2"><td class="td_right">Brama:</td><td><input id="ipGATE" type="text" maxlength="15" minlength="7" placeholder="Wprowadź Bramę" /></td></tr>
+                        <tr id="ip3"><td class="td_right">Maska podsieci:</td><td><input id="ipMASK" type="text" maxlength="15" minlength="7" placeholder="Wprowadź Maskę Podsieci" /></td></tr>
+                        <tr id="ip4"><td class="td_right">DNS1:</td><td><input id="ipDNS1" type="text" maxlength="15" /></td></tr>
+                        <tr id="ip5"><td class="td_right">DNS2:</td><td><input id="ipDNS2" type="text" maxlength="15" /></td></tr>
+
+
+
+                    </table>
+
+
+                    &nbsp;<br />
+                    <hr />
+                    <p>Ustawienia kontroli dostępu: </p><br />
+                    <table>
+                        <tr>
+                            <td class="td_right" style="vertical-align:top">Poziom bezpieczeństwa:</td>
+                            <td>
+                                <input id="securityNone" type="radio" name="security" checked="checked" value="0" onchange="chng_security('none');" /><label for="securityNone">Brak uwierzytelniania</label><br>
+
+                                <input id="securityConfig" type="radio" name="security" value="1" onchange="chng_security('');" /><label for="securityConfig">Dostęp z hasłem tylko do konfiguracji</label><br>
+                                <input id="securityAll" type="radio" name="security" value="2" onchange="chng_security('');" /><label for="securityAll">Dostęp z hasłem do całego systemu</label>
+                            </td>
+                        </tr>
+                        <tr id="sec1"><td class="td_right">Nazwa użytkownika:</td><td><input id="userName" type="text" minlength="3" maxlength="32" /></td></tr>
+                        <tr id="sec2"><td class="td_right">Hasło:</td><td><input id="userPass1" type="password" minlength="3" maxlength="32" /></td></tr>
+                        <tr id="sec3"><td class="td_right">Powtórz hasło:</td><td><input id="userPass2" type="password" minlength="3" maxlength="32" /></td></tr>
+
+                    </table>
+</div>
+
+                    <div id="errorsDIV" style="display:none">
+                        &nbsp;<br />
+                        <hr />
+                        <div style="background-color:red; color:white;" class="boxshadow">
+                            <div style=" float:left; font-size:45px; width:25px;margin-left:10px;">  !  </div>
+                            <div style=" float:left; ">
+                                Lista błędów:
+                                <br />
+                                <div id="errList" style="font-size:small; font-style:italic">...</div>
+                            </div>
+                            <div style="clear:both;"></div>
+                        </div>
+                    </div>
+
+                    <div id="savedDIV" style="display:none">
+                        &nbsp;<br />
+                        <hr />
+                        <div style="background-color:lawngreen; color:black;" class="boxshadow">
+                            <div style="margin:20px">
+                                <div id="zapis1"> Zapisano dane !!!</div>
+                                <div style="text-align:center">
+                                    <div class="btn btn-default btn-sm led-btn" onclick="reset();" id="res" style="width:124px;margin-bottom:10px;margin-right:18px;">Reset</div>
+                                </div>
+                            </div>
+                            <div style="clear:both;"></div>
+
+                        </div>
+                    </div>
+
+                    &nbsp;<br />
+                
+                &nbsp;<br />
+                <hr />
+                <div style="text-align:center">
+
+                    <div class="btn btn-default btn-sm led-btn" onclick="validate();" id="ok1" style="width:124px;margin-bottom:10px;margin-right:18px;">Zapisz</div>
+                </div>
+            </form>
+
+
+
+
+
+            <hr />
+            <p style="text-align:right;font-size:8pt">(c)'2020 Tomasz Fronczek</p>
+
+        </div>
+    </center>
+    <script src="functions.js"></script>
+    <script>
+		var userSecurityLevel = 0;
+        var DHCP = 1;
+
+
+        function validate() {
+            errors = "";
+            var errObj = document.getElementById("errorsDIV");
+            errObj.style.display = "none";
+            var errListObj = document.getElementById("errList");
+            errListObj.innerHTML = "";
+
+            var isDHCP = document.getElementById("ipDHCP").checked;
+            var isSecured = !document.getElementById("securityNone").checked;
+            var securityLevel = 0;
+            if (isSecured) securityLevel = document.getElementById("securityAll").checked ? 2 : 1;
+
+            // wifi Check
+            var SSID = testText("SSID", textChars, "Podaj poprawne znaki w SSID", "Musisz wypełnić SSID", false, 3, "SSID jest zbyt krótkie");
+            var pass1 = testText("password1", textChars, "Podaj poprawne znaki w Haśle", "Musisz podać Hasło", false, 3, "Hasło jest zbyt krótkie");
+            var pass2 = testText("password2", textChars, "Podaj poprawne znaki w Powtórzeniu Hasła", "Musisz podać Powtórzenie Hasła", false);
+            var password = "";
+            if (pass1 != "" && pass2 != "") password = compareText("password1", "password2", "Hasło i powtórzenie muszą się zgadzać", pass1);
+
+            var errorsWiFi = errors;
+            errors = "";
+            var errorsIP = "";
+
+
+            var IP = getVal("ipIP");
+            var GATE = getVal("ipGATE");
+            var MASK = getVal("ipMASK");
+            var DNS1 = getVal("ipDNS1");
+            var DNS2 = getVal("ipDNS2");
+
+            // IP check
+            if (!isDHCP) {
+                IP = testIP("ipIP", "Adres IP jest niepoprawny", "Należy podać adres IP", false);
+                GATE = testIP("ipGATE", "Brama domyślna jest nieprawidłowa", "Należy podać Bramę domyślną", false);
+                MASK = testIP("ipMASK", "Maska jest nieprawidłowa", "Należy podać Maskę", false);
+                DNS1 = testIP("ipDNS1", "Serwer DNS1 jest nieprawidłowy");
+                DNS2 = testIP("ipDNS2", "Serwer DNS2 jest nieprawidłowy");
+
+            }
+            errorsIP = errors;
+            errors = "";
+
+            var userName = getVal("userName");
+            var userPass1 = getVal("userPass1");
+            var userPass2 = getVal("userPass2");
+            var userPass = "";
+            // Authority check
+            if (isSecured) {
+                userName = testText("userName", textChars, "Podaj poprawne znaki w Nazwie Użytkownika", "Musisz podać Nazwę Użytkownika", false, 3, "Nazwa użytkownika jest za krótka");
+                userPass1 = testText("userPass1", textChars, "Podaj poprawne znaki w Haśle", "Musisz podać Hasło", false, 3, "Hasło jest za krótkie");
+                userPass2 = testText("userPass2", textChars, "Podaj poprawne znaki w Powtórzeniu Hasła", "Musisz podać Powtórzenie Hasła", false);
+
+                if (userPass1 != "" && userPass2 != "") userPass = compareText("userPass1", "userPass2", "Hasło i powtórzenie muszą się zgadzać", pass1);
+
+            }
+
+            errListObj.innerHTML = "&nbsp;<br>";
+            if (errorsWiFi != "") {
+                errObj.style.display = "";
+                errListObj.innerHTML += "<p style='font-size:medium;font-style:normal'>Konfiguracja WiFi:</p>" + errorsWiFi + "<br>";
+
+            }
+
+            if (errorsIP != "") {
+                errObj.style.display = "";
+                errListObj.innerHTML += "<p style='font-size:medium;font-style:normal'>Konfiguracja Adresów IP:</p>" + errorsIP + "<br>";
+
+            }
+
+
+            if (errors != "") {
+                errObj.style.display = "";
+                errListObj.innerHTML += "<p style='font-size:medium;font-style:normal'>Konfiguracja Kontroli Dostępu:</p>" + errors + "<br>";
+
+            }
+
+            if (textIsEmpty(errorsWiFi) && textIsEmpty(errorsIP) && textIsEmpty(errors)) {
+                // prepare and send data
+                var e = "\",\n";
+                var sd = "{";
+                sd += "SSID:\"" + SSID + e;
+                sd += "PASS1:\"" + pass1 + e;
+                sd += "PASS2:\"" + pass2 + e;
+                sd += "isDHCP:\"" + isDHCP + e;
+                sd += "IP:\"" + IP + e;
+                sd += "GATE:\"" + GATE + e;
+                sd += "MASK:\"" + MASK + e;
+                sd += "DNS1:\"" + DNS1 + e;
+                sd += "DNS2:\"" + DNS2 + e;
+                sd += "securityLevel:\"" + securityLevel + e;
+                sd += "userName:\"" + userName + e;
+                sd += "userPass1:\"" + userPass1 + e;
+                sd += "userPass2:\"" + userPass1 + "\"}";
+
+
+                req2 = new XMLHttpRequest();
+
+                req2.open("POST", "syscfg.html", true);
+                req2.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                req2.onload = function () {
+                        var savedObj = document.getElementById("savedDIV");
+                        savedObj.style.display = "";
+                    }
+
+                
+                req2.onerror = function () {
+				if (inReset) return;
+                    errObj.style.display = "";
+                    errListObj.innerHTML += "<p style='font-size:medium;font-style:normal'>Nie zapisano danych</p>";
+                }
+                req2.send(sd);
+
+
+
+                return true;
+            }
+            return false;
+        }
+
+        function chng_ip(value) {
+            for (var i = 1; i < 6; i++) {
+                var obj = document.getElementById("ip" + i);
+                obj.style.display = value;
+            }
+        }
+
+        function chng_security(value) {
+            for (var i = 1; i < 4; i++) {
+                var obj = document.getElementById("sec" + i);
+                obj.style.display = value;
+            }
+        }
+
+       
+
+        /// server side
+        var userSecurityLevel1 = "%SECLEVEL%";
+        var DHCP1 = "%DHCP%";
+        if (isNum(userSecurityLevel1)) userSecurityLevel = parseInt(userSecurityLevel1);
+        if (isNum(DHCP1)) DHCP = parseInt(DHCP1);
+
+        setVal("SSID", "%SSID%");
+        setVal("password1", "%PASS1%");
+        setVal("password2", "%PASS2%");
+
+        setVal("ipIP", "%IP%");
+        setVal("ipGATE", "%GATE%");
+        setVal("ipMASK", "%MASK%");
+        setVal("ipDNS1", "%DNS1%");
+        setVal("ipDNS2", "%DNS2%");
+
+        setVal("userName", "%USER%");
+        setVal("userPass1", "%UPASS1%");
+        setVal("userPass2", "%UPASS2%");
+
+
+
+
+
+
+        if (DHCP == 1) {
+            document.getElementById("ipDHCP").checked = true;
+            chng_ip('none');
+        }
+        else {
+            document.getElementById("ipSTATIC").checked = true;
+            chng_ip('');
+        }
+
+
+
+
+
+        switch (userSecurityLevel) {
+            case 1: document.getElementById("securityConfig").checked = true;
+                chng_security('');
+                break;
+            case 2: document.getElementById("securityAll").checked = true;
+                chng_security('');
+                break;
+            default: document.getElementById("securityNone").checked = true;
+                chng_security('none');
+                break;
+        }
+
+
+    </script>
+</body>
+</html>
+
+

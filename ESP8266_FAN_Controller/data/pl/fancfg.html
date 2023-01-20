@@ -1,0 +1,372 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <title>Rozprowadzanie ciepła z kominka</title>
+
+    <link href="style.css" rel="stylesheet" />
+
+</head>
+<body>
+    <center>
+        <div class="head1">
+            <div class="head2">
+                <div class="head3">
+                    <p style="font-size:larger">Regulator obrotów wentylatorów</p>
+                    <p style="font-size:medium">(c)'2020 ELFRO Tomasz Fronczek</p>
+                </div>
+                <div style="float:right; width:70px;">
+
+                    <div class="dropdown">
+                        <img src="menu.png" onclick="myFunction()" class="dropbtn" />
+                        <div id="myDropdown" class="dropdown-content">
+                            <a href="/">Home</a>
+                            <a href="about.html">O programie</a>
+                            <hr class="hrmenu" />
+
+                            <a style="color:dimgray">Konfig. went.</a>
+                            <a href="syscfg.html">Konfig. systemu</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="clear:both"></div>
+            <hr />
+
+
+            <p>Konfiguracja wentylatorów: </p><br />
+            <form>
+                <div style="line-height:1.5;margin-left:20px;">
+                    <table>
+                        <tr>
+                            <td class="td_right" style="vertical-align:top">Ilość wentylatorów:</td>
+                            <td>
+                                <input id="i4" type="radio" name="iw" checked="checked" value="4" onchange="hideW(0);" /><label for="i4">4</label>
+                                <br />
+                                <input id="i3" type="radio" name="iw" value="3" onchange="hideW(1);" /><label for="i3">3</label>
+                                <br />
+                                <input id="i2" type="radio" name="iw" value="2" onchange="hideW(2);" /><label for="i2">2</label>
+                                <br />
+                                <input id="i1" type="radio" name="iw" value="1" onchange="hideW(3);" /><label for="i1">1</label>
+                                <br />
+                            </td>
+
+                        </tr>
+                        <tr><td class="td_right" id="t1">Wentylator 1<br>Nazwa:<br/>Minimalna prędkość:</td><td><div id="dw1"><br><input id="w1" type="text" maxlength="128" placeholder="Wprowadź nazwę" class="inputfan" value="%FAN1%"/>
+						</br><input id="wm1" type="text" maxlength="3" class="sinputfan"  value="%FMIN1%"/>
+						<input type="checkbox" id="b1" name="b1" %FB1%> <label for="b1"> Boost </label>
+						</div></td></tr>
+                        <tr><td class="td_right" id="t2"><br>Wentylator 2<br>Nazwa:<br/>Minimalna prędkość:</td><td><div id="dw2"><br>&nbsp;<br><input id="w2" type="text" maxlength="128" placeholder="Wprowadź nazwę" class="inputfan" value="%FAN2%"/>
+						</br><input id="wm2" type="text" maxlength="3" class="sinputfan" value="%FMIN2%"/>
+						<input type="checkbox" id="b2" name="b2" %FB2%> <label for="b2"> Boost </label>
+						</div></td></tr>
+                        <tr><td class="td_right" id="t3"><br>Wentylator 3<br>Nazwa:<br/>Minimalna prędkość:</td><td><div id="dw3"><br>&nbsp;<br><input id="w3" type="text" maxlength="128" placeholder="Wprowadź nazwę" class="inputfan" value="%FAN3%"/>
+						</br><input id="wm3" type="text" maxlength="3"  class="sinputfan" value="%FMIN3%"/>
+						<input type="checkbox" id="b3" name="b3" %FB3%> <label for="b3"> Boost </label>
+						</div></td></tr>
+                        <tr><td class="td_right" id="t4"><br>Wentylator 4<br>Nazwa:<br/>Minimalna prędkość:</td><td><div id="dw4"><br>&nbsp;<br><input id="w4" type="text" maxlength="128" placeholder="Wprowadź nazwę" class="inputfan" value="%FAN4%"/>
+						</br><input id="wm4" type="text" maxlength="3"   class="sinputfan" value="%FMIN4%"/>
+						<input type="checkbox" id="b4" name="b4" %FB4%> <label for="b4"> Boost </label>
+						</div></td></tr>
+
+
+
+
+                    </table>
+
+<br>Minimalna prędkość - wartość minimalna prędkosci obrotowej w procentach. Zapobiega to zatrzymaniu wentylatora. Prędkości mniejsze będą podwyższane do tej wartości.
+<br>&nbsp;<br>Boost- przyspiesza wentylator do 50 procent na 2 sekundy umożliwiając start przy bardzo wolnych obrotach.<br>
+<hr/>
+ <table>
+                        <tr>
+                            <td class="td_right" style="vertical-align:top">Wyjście AUX:</td>
+                            <td>
+                                <input id="aux1" type="radio" name="aux11" checked="checked" value="1" /><label for="aux1">Niewykorzystane</label>
+                                <br />
+                                <input id="aux2" type="radio" name="aux11" value="2"  /><label for="aux2">Dioda pokazująca status urządzenia</label>
+                                <br />
+                                <input id="aux3" type="radio" name="aux11" value="3"  /><label for="aux3">Wyjście przekaźnikowe</label>
+                                
+                                <br />
+                            </td>
+
+                        </tr>
+						 <tr><td class="td_right" >Nazwa wyjścia AUX:</td><td>
+						 <input id="auxn" type="text" maxlength="128" placeholder="Wprowadź nazwę" class="inputfan" value="%AUXN%"/>
+						</td></tr>
+						</table>
+						Status urządzenia:<br>
+						- miganie ok 1 sek - łączenie z WiFi. <br>
+						- krótkie błyśnięcia długa przerwa - normalna praca, WiFi podłączone <br>
+						- bardzo krótkie błyśnięcia i krótka przerwa - praca w trybie Access Pointa<br>
+
+
+<hr/>
+ <table>
+                        <tr>
+                            <td class="td_right" >Częstotliwość PWM:</td>
+                            <td>
+						 <input id="PWM" type="text" maxlength="6" placeholder="Wprowadź częstotliwość PWM" class="minputfan" value="%PWMF%"/>
+						</td></tr>
+						</table>
+						Częstotliwość PWM określa podstawową częstotliwość sterowania silnikami. Wartość z zakresu 100Hz 40000Hz.<br>
+						Dla ESP8266 domyślna częstotliwość to 1000Hz. Jednak w zależności od użytego silnika PWM o częstotliwościach 20-20000 Hz może być słyszalne podczas pracy. (Wentylator może piszczeć).<br>
+						 <b>Zalecane 22000Hz.</b>
+
+
+
+ </div>
+
+
+
+
+                    <div id="errorsDIV" style="display:none">
+                        &nbsp;<br />
+                        <hr />
+                        <div style="background-color:red; color:white;" class="boxshadow">
+                            <div style=" float:left; font-size:45px; width:25px;margin-left:10px;">  !  </div>
+                            <div style=" float:left; ">
+                                Lista błędów:
+                                <br />
+                                <div id="errList" style="font-size:small; font-style:italic">...</div>
+                            </div>
+                            <div style="clear:both;"></div>
+                        </div>
+                    </div>
+
+                    <div id="savedDIV" style="display:none">
+                        &nbsp;<br />
+                        <hr />
+                        <div style="background-color:lawngreen; color:black;" class="boxshadow">
+                            <div style="margin:20px">
+                                <div id="zapis1"> Zapisano dane !!!</div>
+                                <div style="text-align:center">
+                                    <div class="btn btn-default btn-sm led-btn" onclick="reload();" id="res" style="width:124px;margin-bottom:10px;margin-right:18px;">Powrót</div>
+                                </div>
+                            </div>
+                            <div style="clear:both;"></div>
+
+                        </div>
+                    </div>
+
+                    &nbsp;<br />
+               
+                &nbsp;<br />
+                <hr />
+                <div style="text-align:center">
+
+                    <div class="btn btn-default btn-sm led-btn" onclick="validate();" id="ok1" style="width:124px;margin-bottom:10px;margin-right:18px;">Zapisz</div>
+                </div>
+            </form>
+
+
+
+
+
+            <hr />
+            <p style="text-align:right;font-size:8pt">(c)'2020  ELFRO inż. Tomasz Fronczek</p>
+
+        </div>
+    </center>
+    <script src="functions.js"></script>
+    <script>
+        var ilew = 4;
+        var ilew1 = "%ILEW%";
+        if (isNum(ilew1) ) ilew = parseInt(ilew1);
+		
+		var aux=1;
+		var aux_1 = "%AUX%";
+        if (isNum(aux_1) ) aux = parseInt(aux_1);
+
+
+        function hideW(ile) {
+
+            var w2 = document.getElementById("dw2");
+            var w3 = document.getElementById("dw3");
+            var w4 = document.getElementById("dw4");
+
+            var t2 = document.getElementById("t2");
+            var t3 = document.getElementById("t3");
+            var t4 = document.getElementById("t4");
+
+            w2.style.display = "";
+            w3.style.display = "";
+            w4.style.display = "";
+            t2.style.display = "";
+            t3.style.display = "";
+            t4.style.display = "";
+
+            if (ile > 0) {
+                w4.style.display = "none"; t4.style.display = "none";
+            }
+            if (ile > 1) {
+                w3.style.display = "none"; t3.style.display = "none";
+            }
+            if (ile > 2) {
+                w2.style.display = "none"; t2.style.display = "none";
+            }
+
+        }
+
+
+     
+        function validate() {
+            errors = "";
+            var errObj = document.getElementById("errorsDIV");
+            errObj.style.display = "none";
+            var errListObj = document.getElementById("errList");
+            errListObj.innerHTML = "";
+
+
+           
+            var w1 = document.getElementById("i1").checked;
+            var w2 = document.getElementById("i2").checked;
+            var w3 = document.getElementById("i3").checked;
+            ilew=4;
+            if (w3) ilew = 3;
+            if (w2) ilew = 2;
+            if (w1) ilew = 1;
+
+
+            // fans Check
+			var pzn="Podaj poprawne znaki w nazwie wentylatora ";
+			var nzw="Musisz wypełnić nazwę wentylatora ";
+			var pl="Podaj poprawną wartosć w minimalnej prędkości wentylatora ";
+			var ll="Wprowadź wartość w minimalnej prędkości wentylatora ";
+			var lpa="Wartość w minimalnej prędkości wentylatora ";
+			var lpb=" musi być z zakresu 0-100";
+            
+			var w1 = testText2("w1", notAllowedChars, pzn+"1", nzw+"1", false,0,"","inputfan");
+            var w2 = testText2("w2", notAllowedChars, pzn+"2", nzw+"2", ilew < 2,0,"","inputfan");
+            var w3 = testText2("w3", notAllowedChars, pzn+"3", nzw+"3", ilew < 3,0,"","inputfan");
+            var w4 = testText2("w4", notAllowedChars, pzn+"4", nzw+"4", ilew < 4,0,"","inputfan");
+			
+			var min1=testInt("wm1",pl+"1",ll="1",0,100,lpa+"1"+lpb,"sinputfan");
+			var min2=testInt("wm2",pl+"2",ll="2",0,100,lpa+"2"+lpb,"sinputfan");
+			var min3=testInt("wm3",pl+"3",ll="3",0,100,lpa+"3"+lpb,"sinputfan");
+			var min4=testInt("wm4",pl+"4",ll="4",0,100,lpa+"4"+lpb,"sinputfan");
+			var b1=0;
+			var b2=0;
+			var b3=0;
+			var b4=0;
+			if (isChecked("b1")) b1=1;
+			if (isChecked("b2")) b2=1;
+			if (isChecked("b3")) b3=1;
+			if (isChecked("b4")) b4=1;
+
+var errorsW="";
+if (errors!="") 
+{
+errorsW="<p style='font-size:medium;font-style:normal'>Konfiguracja Wentylatorów:</p>" + errors + "<br>";
+errors="";
+}
+			 			
+			if (isChecked("aux1")) aux=0;
+			if (isChecked("aux2")) aux=1;
+			if (isChecked("aux3")) aux=2;
+			var auxN=testText2("auxn", notAllowedChars, "Podaj poprawne znaki w nazwie wyjścia AUX", "Musisz wypełnić nazwę wyjścia", aux!=2,0,"","inputfan");
+			
+var errorsAUX="";
+if (errors!="") 
+{
+errorsAUX="<p style='font-size:medium;font-style:normal'>Konfiguracja wyjścia AUX:</p>" + errors + "<br>";
+errors="";
+}
+			
+			
+			var PWM=testInt("PWM","Podaj poprawną wartość PWM","Musisz wprowadzić wartość PWM",100,40000,"Wartość PWM musi być z zakresu 100-40000 Hz","minputfan");
+		
+if (errors!="") 
+{
+ errors="<p style='font-size:medium;font-style:normal'>Konfiguracja częstotliwości PWM:</p>" + errors + "<br>";
+}
+
+errors=errorsW+errorsAUX+errors;
+		
+if (errors != "") {
+                errObj.style.display = "";
+                errListObj.innerHTML += errors;
+
+            }
+          
+		  
+
+            if (textIsEmpty(errors)) {
+                // prepare and send data
+                var e = "\",\n";
+                var sd = "{";
+                sd += "ilew:\"" + ilew + e;
+                sd += "w1:\"" + w1 + e;
+                sd += "w2:\"" + w2 + e;
+                sd += "w3:\"" + w3 + e;
+                sd += "w4:\"" + w4 + e;
+				sd += "min1:\""+min1+e;
+				sd += "min2:\""+min2+e;
+				sd += "min3:\""+min3+e;
+				sd += "min4:\""+min4+e;
+				sd += "b1:\"" + b1 + e;
+                sd += "b2:\"" + b2 + e;
+                sd += "b3:\"" + b3 + e;
+                sd += "b4:\"" + b4 + e;
+				sd += "auxS:\"" + aux + e;
+				sd += "auxN:\"" + auxN +e;
+				sd += "PWMFreq:\"" + PWM +
+								"\"}";
+
+
+                req2 = new XMLHttpRequest();
+
+                req2.open("POST", "fancfg.html", true);
+                req2.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                req2.onload = function () {
+                        var savedObj = document.getElementById("savedDIV");
+                        savedObj.style.display = "";
+                    }
+                req2.onerror = function () {
+                    errObj.style.display = "";
+                    errListObj.innerHTML += "<p style='font-size:medium;font-style:normal'>Nie zapisano danych.</p>";
+                }
+                req2.send(sd);
+
+                return true;
+            }
+            return false;
+        }
+
+
+        hideW(4 - ilew);
+        var we1 = document.getElementById("i1");
+        var we2 = document.getElementById("i2");
+        var we3 = document.getElementById("i3");
+        var we4 = document.getElementById("i4");
+		
+		
+
+        switch (ilew) {
+            case 1: we1.checked = true; break;
+            case 2: we2.checked = true; break;
+            case 3: we3.checked = true; break;
+            default: we4.checked = true; break;
+
+        }
+
+		var aux1 = document.getElementById("aux1");
+		var aux2 = document.getElementById("aux2");
+		var aux3 = document.getElementById("aux3");
+
+		switch (aux) {
+            
+            case 1: aux2.checked = true; break;
+            case 2: aux3.checked = true; break;
+            default: aux1.checked = true; break;
+
+        }
+
+
+    </script>
+</body>
+</html>
+
+
