@@ -25,9 +25,9 @@ Because ESP works with a voltage of 3.3V, each output can be set to a maximum of
 
 I designed a PCB for this schematic. Basic assumption - ease of execution even for beginners. That's why I gave up on SMD components. The tile is quite large but easy to manufacture and assemble.
 
-Arrangement of elements on the board:
+Arrangement of elements on the board:<br>
 
-<img src="scheme/elements.png" />
+<img src="scheme/elements.png" /><br>
 
 Sources of schemat and board are in repository scheme folder
 
@@ -50,14 +50,16 @@ Fan config (confirgure PWM's)
 Sys config (Configure Wifi Acces Control etc.)
 
 First we need configure WiFi etc.  Strongly recommended its used static IP adresses.
-<img src="scheme/fan2.png" />
+<br>
+<img src="scheme/fan2.png" /><br>
 
-Second after change data and reebot Youc an connect to device by entering the ip address into the web browser.
-Then You can see Home (index.html) page:
-<img src="scheme/fan1.png" />
+Second after change data and reebot You can connect to device by entering the ip address into the web browser.
+Then You can see Home (index.html) page:<br>
+<img src="scheme/fan1.png" /><br>
 
 Fan config its used to configure fans and AUX 
-<img src="scheme/fan3.png" />
+<br>
+<img src="scheme/fan3.png" /><br>
 
 That's all folks ;) 
 
