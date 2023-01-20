@@ -1,8 +1,18 @@
 # ESP8266_FAN_Controller
-An Arduino ESP8266 libraries and software to steering 4 PWMs ex. fans, motors, lights etc
+An Arduino ESP8266 libraries and software to steering 4 PWMs ex. fans, motors, lights etc. (
+(c)' 2020 ELFRO Tomasz Fronczek
 
 Its simple software using Node MCU. User can connect by WiFi to local ESP Web Page and change values.
 Software is available in english and polish language.
+
+Its using Arduino libraries:
+
+ESPAsyncTCP: https://github.com/me-no-dev/ESPAsyncTCP
+ESPAsyncWebServer: https://github.com/me-no-dev/ESPAsyncWebServer
+ArduinoJson: https://github.com/bblanchon/ArduinoJson 
+
+AudrinoJson is used in 5th version - You can download older wersion or migrate code to newer (a little complicate)
+
 
 <h2> HARDWARE </h2><br>
 <img src="scheme/scheme.png" />
@@ -19,6 +29,45 @@ Arrangement of elements on the board:
 
 <img src="scheme/elements.png" />
 
-Sources of schematics and board are in repository scheme folder
+Sources of schemat and board are in repository scheme folder
+
+<h2>SOFTWARE</h2>
+
+Every configuration is in inits.h file its simple and easy 
+You can change language (English or Polish) if You don't need more languages Remove <code>String lang="/en";</code> and all its occurrences in the program.
+You can also delete en and pl subfolders (in data folder)
+
+Software is very simple. 
+If the configuration of the device was not performed or it cannot connect to the selected WiFi network for more than a minute, the device will enter the Access Point mode where you can enter the configuration by connecting to the network called FAN_CONTROLLER, e.g. using a phone.
+
+Password is not required. Connecting to the network and entering the Access Point mode is performed only at the start of the device !!!.
+
+After connecting to Access Point mode, the device address will always be: 192.168.4.1
+Software have four pages availabe in right top menu 
+Main Page (Home)
+About (info about program)
+Fan config (confirgure PWM's)
+Sys config (Configure Wifi Acces Control etc.)
+
+First we need configure WiFi etc.  Strongly recommended its used static IP adresses.
+<img src="scheme/fan2.png" />
+
+Second after change data and reebot Youc an connect to device by entering the ip address into the web browser.
+Then You can see Home (index.html) page:
+<img src="scheme/fan1.png" />
+
+Fan config its used to configure fans and AUX 
+<img src="scheme/fan3.png" />
+
+That's all folks ;) 
+
+(c)'2020 ELFRO Tomasz Fronczek
+
+
+
+
+
+
+
 
 
