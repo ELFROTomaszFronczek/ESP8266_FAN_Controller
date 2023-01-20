@@ -7,9 +7,9 @@ Software is available in english and polish language.
 
 Its using Arduino libraries:
 
-ESPAsyncTCP: https://github.com/me-no-dev/ESPAsyncTCP
-ESPAsyncWebServer: https://github.com/me-no-dev/ESPAsyncWebServer
-ArduinoJson: https://github.com/bblanchon/ArduinoJson 
+ESPAsyncTCP: https://github.com/me-no-dev/ESPAsyncTCP<br>
+ESPAsyncWebServer: https://github.com/me-no-dev/ESPAsyncWebServer<br>
+ArduinoJson: https://github.com/bblanchon/ArduinoJson <br>
 
 AudrinoJson is used in 5th version - You can download older wersion or migrate code to newer (a little complicate)
 
